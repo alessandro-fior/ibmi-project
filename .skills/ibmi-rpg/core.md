@@ -1,58 +1,35 @@
-\# IBM i AI Rule Engine - Core
-
-
+# IBM i AI Rule Engine - Core
 
 This folder defines deterministic rules for AI code generation.
 
+## Priority order
 
+1. GEMINI.md (highest priority - system master)
+2. AGENTS.md (global project governance)
+3. .skills/ibmi-rpg/core.md
+4. .skills/ibmi-rpg/db2-for-i.md
+5. .skills/ibmi-rpg/rpgle-rules.md
+6. .skills/ibmi-rpg/coding-standards.md
 
-\## Priority order
+---
 
-
-
-1\. AGENTS.md (global project rules)
-
-2\. .skills/ibmi-rpg/core.md
-
-3\. .skills/ibmi-rpg/db2-for-i.md
-
-4\. .skills/ibmi-rpg/rpgle-rules.md
-
-5\. .skills/ibmi-rpg/coding-standards.md
-
-
-
-\---
-
-
-
-\## AI enforcement rule
-
-
+## AI enforcement rule
 
 AI MUST:
+- Read ALL files in .skills/ibmi-rpg before generating code
+- Never override DB2 or RPG rules
+- Prefer modernization but never break business logic
 
-\- Read ALL files in .skills/ibmi-rpg before generating code
+---
 
-\- Never override DB2 or RPG rules
-
-\- Prefer modernization but never break business logic
-
-
-
-\---
-
-
-
-\## Determinism rule
-
-
+## Determinism rule
 
 Given same input, AI must produce:
+- same structure
+- same naming conventions
+- same SQL patterns
 
-\- same structure
 
-\- same naming conventions
 
-\- same SQL patterns
+
 

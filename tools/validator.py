@@ -1,115 +1,72 @@
 import os
+import re
+import sys
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+class IBMiValidator:
+    def __init__(self, root_dir):
+        self.root_dir = root_dir
+        self.errors = []
 
-ERRORS = []
-WARNINGS = []
+    def log_error(self, file_path, message):
+        self.errors.append(f"[ERROR] {file_path}: {message}")
 
-# ----------------------------
-# Helpers
-# ----------------------------
+    def validate_naming(self):
+        """Checks if files follow the layer naming convention."""
+        rpg_dir = os.path.join(self.root_dir, 'qrpglesrc')
+        if not os.path.exists(rpg_dir):
+            return
 
-def check_file(path, condition, message, level="ERROR"):
-    if not condition:
-        if level == "ERROR":
-            ERRORS.append(message)
-        else:
-            WARNINGS.append(message)
+        valid_suffixes = ['_repo.sqlrpgle', '_serv.rpgle', '_main.rpgle', '_h.rpgleinc']
+        for filename in os.listdir(rpg_dir):
+            if filename.startswith('t_'): # Tests are allowed
+                continue
+            
+            if not any(filename.endswith(suffix) for suffix in valid_suffixes):
+                self.log_error(filename, "Invalid naming convention. Must end with _repo, _serv, _main, or _h.")
 
-def scan_files():
-    return []
-    for root, dirs, files in os.walk(ROOT):
-        for f in files:
-            yield os.path.join(root, f)
+    def validate_sql_standards(self, file_path):
+        """Checks for Forbidden SQL patterns like SELECT *."""
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read().upper()
+            if 'SELECT *' in content:
+                self.log_error(file_path, "Forbidden 'SELECT *' detected.")
+            
+            # Check for parameterization (basic check for host variables)
+            if 'SELECT' in content and 'FROM' in content:
+                if "WHERE" in content and ":" not in content and "?" not in content:
+                   if "JOIN" not in content: # Simple heuristic
+                        self.log_error(file_path, "Possible non-parameterized SQL detected.")
 
-# ----------------------------
-# RULE 1: duplicate rule files
-# ----------------------------
+    def validate_rpg_free(self, file_path):
+        """Checks if RPG file is free-format."""
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            first_line = f.readline().strip().upper()
+            if first_line.startswith('     '): # Typical fixed format start
+                self.log_error(file_path, "Fixed-format RPG detected. Must be Free-format.")
 
-def check_duplicates():
-    skills_path = os.path.join(ROOT, ".skills", "ibmi-rpg")
-    if not os.path.exists(skills_path):
-        ERRORS.append(".skills/ibmi-rpg missing")
-        return
+    def run(self):
+        print(f"--- Starting Validation in {self.root_dir} ---")
+        self.validate_naming()
+        
+        for root, _, files in os.walk(self.root_dir):
+            for file in files:
+                path = os.path.join(root, file)
+                if file.endswith(('.rpgle', '.sqlrpgle')):
+                    self.validate_sql_standards(path)
+                    self.validate_rpg_free(path)
+                if file.endswith('.sql'):
+                    self.validate_sql_standards(path)
 
-    files = os.listdir(skills_path)
-
-    if "coding-starndars.md" in files:
-        ERRORS.append("TYPO FILE FOUND: coding-starndars.md")
-
-    if "compilation-rouse.md" in files:
-        ERRORS.append("WRONG FILE NAME: compilation-rouse.md")
-
-    if "AGENTS.MD" in files:
-        ERRORS.append("DUPLICATE AGENTS FILE INSIDE .skills")
-
-# ----------------------------
-# RULE 2: IBM i structure
-# ----------------------------
-
-def check_structure():
-    required = [
-        "qrpglesrc",
-        "qsqlsrc",
-        "qddssrc"
-    ]
-
-    for r in required:
-        if not os.path.exists(os.path.join(ROOT, r)):
-            ERRORS.append(f"Missing folder: {r}")
-
-# ----------------------------
-# RULE 3: SQL violations
-# ----------------------------
-
-def check_sql():
-    for root, dirs, files in os.walk(ROOT):
-        for f in files:
-            if f.endswith(".sql") or f.endswith(".sqlrpgle"):
-                path = os.path.join(root, f)
-                try:
-                    content = open(path, "r", encoding="utf-8").read().upper()
-                    if "SELECT *" in content:
-                        ERRORS.append(f"SELECT * found in {path}")
-                except:
-                    pass
-
-# ----------------------------
-# RULE 4: RPG placement
-# ----------------------------
-
-def check_rpg_placement():
-    for root, dirs, files in os.walk(ROOT):
-        for f in files:
-            if f.endswith(".rpgle") or f.endswith(".sqlrpgle"):
-                if "qrpglesrc" not in root:
-                    WARNINGS.append(f"RPG file outside qrpglesrc: {f}")
-
-# ----------------------------
-# RUN
-# ----------------------------
-
-def run():
-    print("IBM i REPO VALIDATOR START\n")
-
-    check_duplicates()
-    check_structure()
-    check_sql()
-    check_rpg_placement()
-
-    print("=== ERRORS ===")
-    for e in ERRORS:
-        print("❌", e)
-
-    print("\n=== WARNINGS ===")
-    for w in WARNINGS:
-        print("⚠️", w)
-
-    print("\n=== RESULT ===")
-    if not ERRORS:
-        print("✅ REPO IS VALID FOR GEMINI / IBM i")
-    else:
-        print("❌ REPO HAS CRITICAL ISSUES")
+        if self.errors:
+            for err in self.errors:
+                print(err)
+            return False
+        
+        print("--- Validation Successful! ---")
+        return True
 
 if __name__ == "__main__":
-    run()
+    validator = IBMiValidator('.')
+    success = validator.run()
+    if not success:
+        sys.exit(1)
