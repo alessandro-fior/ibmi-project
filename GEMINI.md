@@ -156,6 +156,10 @@ AI MUST:
 
 5\. Never remove or change business rules
 
+6\. MANDATORY: Use ILE Built-In Functions (%) instead of opcodes (e.g., %SUBST vs SUBST)
+
+7\. MANDATORY: Prefer direct assignment (A = B) over EVAL (eval A = B) unless required for clarity in complex expressions.
+
 
 
 \---

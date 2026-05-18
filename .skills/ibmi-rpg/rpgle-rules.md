@@ -18,8 +18,21 @@
 
 ## Preferred Opcodes
 - `exec sql`
-- `eval` (implicit)
 - `iter`, `leave`
+
+## Modern ILE Style (Mandatory)
+- Use Built-In Functions (BIFs) for all string and data manipulation.
+- **Conversion Table (Legacy/OpCode -> Modern BIF):**
+  - `SUBST` -> `%SUBST`
+  - `SCAN` -> `%SCAN`
+  - `CHECK` -> `%CHECK`
+  - `XLATE` -> `%XLATE`
+  - `REPLACE` -> `%REPLACE`
+  - `LOOKUP` -> `%LOOKUP`
+  - `EQUAL` (in comparisons) -> use `==` or `=`
+- **Assignments:**
+  - Avoid `EVAL`. Use `variable = expression;`.
+  - Use `+=`, `-=`, `*=`, `/=` for arithmetic updates.
 
 ## Avoid / Forbidden
 - Legacy indicators (*IN01-*IN99).
