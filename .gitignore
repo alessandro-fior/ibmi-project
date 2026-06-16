@@ -1,1 +1,64 @@
-ibmi-project/.gitignore
+# IBM i source project 
+# Keep production source members, skills, and build instructions tracked.
+
+# Python tooling caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local virtual environments
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Editor and OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# IBM i generated artifacts and exports
+*.savf
+*.savefile
+*.lst
+*.list
+*.splf
+*.spool
+*.joblog
+*.evfevent
+
+# Build/package output
+build/
+dist/
+out/
+release/
+
+# Never ignore production source trees
+!qrpglesrc/
+!qrpglesrc/**
+!qddssrc/
+!qddssrc/**
+!qsqlsrc/
+!qsqlsrc/**
+!.skills/
+!.skills/**

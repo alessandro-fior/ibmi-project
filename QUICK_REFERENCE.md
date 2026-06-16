@@ -19,6 +19,7 @@
 | **Error Check** | (none) | `IF SQLCODE <> 0;` |
 | **Legacy Code** | `MOVE varA varB;` | `varB = varA;` |
 | **Legacy Indicators** | `*IN01`, `*IN02` | Niente! Use `ind` variables |
+| **Report Logic** | Manual header tracking | `if firstRecord or *inof; write HEADER; *inof = *off; endif;` |
 | **GOTO** | `GOTO LABEL;` | Use procedure, never GOTO |
 | **Logging** | `snd-msg 'text';` | `logInfo('text');` |
 

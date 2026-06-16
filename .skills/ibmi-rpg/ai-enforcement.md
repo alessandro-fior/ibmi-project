@@ -28,6 +28,12 @@ AI MUST CHECK:
 
 
 
+\- production source header is present
+
+\- compile command string is present in source header
+
+\- runtime command or explicit not-applicable note is present
+
 \- naming compliance
 
 \- DB2 compliance

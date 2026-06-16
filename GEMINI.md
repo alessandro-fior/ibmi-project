@@ -277,3 +277,11 @@ PRINTER FILE RULES:
 - PRTF is NOT a DS or RPG structure
 - No printer logic inside RPG data structures
 - Use DDS record formats (HEADER / DETAIL / FOOTER)
+
+
+
+REPORTING STANDARDS:
+
+- Mandatory header logic: `if firstRecord or *inof; write HEADER; *inof = *off; endif;`
+- Header record DDS must include `SKIPB(001)`
+- Logic must reside in `*_report_serv.rpgle` layer

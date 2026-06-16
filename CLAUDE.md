@@ -10,3 +10,5 @@ Focus on:
 
 \- architecture decomposition
 
+\- production source headers with BUILD / RUN / DEPENDS / NOTES
+

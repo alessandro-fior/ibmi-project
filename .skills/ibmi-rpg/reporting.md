@@ -18,11 +18,37 @@ DB2 → SQLRPGLE → SERVICE → PRTF → SPOOL
 
 \- formatting only in service layer
 
-\- printing only via PRTF
+- printing only via PRTF
 
 
 
-\## PAGINATION
+## LOGIC PATTERNS
+
+
+
+### Overflow & First Record Handling
+
+Standard pattern for report generation:
+
+```rpgle
+
+if firstRecord or *inof;
+
+   write HEADER;
+
+   *inof = *off;
+
+endif;
+
+
+
+write DETAIL;
+
+```
+
+
+
+## PAGINATION
 
 
 

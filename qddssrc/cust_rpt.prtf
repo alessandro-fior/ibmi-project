@@ -1,0 +1,26 @@
+A          R HEADER
+A                                      SKIPB(001)
+A                                     2'Customer List Report'
+A                                    60'Page:'
+A                                    66PAGNBR
+A                                      EDTCDE(Z)
+A                                  +1'Date:'
+A                                    72DATE
+A                                      EDTCDE(Y)
+A            TITLE         30A        3' '
+A                                   122'Time:'
+A                                   128TIME
+A          R COLUMNS
+A                                      SPACEB(2)
+A                                     2'ID'
+A                                    10'Name'
+A                                    50'Balance'
+A                                      SPACEA(1)
+A          R DETAIL
+A                                      SPACEB(1)
+A            CUSTID        10S 0      2
+A            CUSTNAME      40A       10
+A            CUSTBAL       12S 2     50EDTCDE(1)
+A          R FOOTER
+A                                      SPACEB(2)
+A                                     2'*** End of Report ***'

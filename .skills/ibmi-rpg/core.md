@@ -28,6 +28,17 @@ Given same input, AI must produce:
 - same structure
 - same naming conventions
 - same SQL patterns
+- same production source header structure
+- same IBM i compile command string pattern
+
+---
+
+## Production source rule
+
+Build, run, dependency, and deployment notes required in production MUST live at
+the top of the source member.
+
+Git-only comments are not production documentation.
 
 
 

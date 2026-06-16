@@ -1,5 +1,12 @@
 # RPGLE Rules (IBM i 7.5)
 
+## Mandatory Source Header
+- Every RPGLE and SQLRPGLE source member MUST start with an operations header.
+- The header MUST include `BUILD`, `RUN`, `DEPENDS`, and `NOTES`.
+- Compile commands MUST be executable IBM i command strings, using the standard placeholders from `compilation-rouse.md`.
+- Runtime examples MUST be kept in the source header when they are needed in production.
+- Do not rely on Git comments, commit messages, or pull request notes for production build instructions.
+
 ## Mandatory (Control Options)
 - Always include `ctl-opt`:
   - `option(*nodebugio : *srcstmt : *nounref)`

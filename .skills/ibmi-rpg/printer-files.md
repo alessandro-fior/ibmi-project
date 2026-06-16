@@ -48,3 +48,19 @@ qddssrc/
 
 HEADER / DETAIL / FOOTER required pattern
 
+
+
+## DDS EXAMPLES
+
+
+
+### Header Record
+
+```dds
+
+A          R HEADER
+
+A                                      SKIPB(001)
+
+```
+

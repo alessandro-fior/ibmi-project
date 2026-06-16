@@ -7,6 +7,7 @@ MANDATORY RULES:
 - Read .skills/ibmi-rpg/*
 - Never assume missing rules
 - Never use duplicated naming patterns
+- Put BUILD / RUN / DEPENDS / NOTES headers at the top of every production source member
 
 ARCHITECTURE RULES:
 - *_repo  → DB2 access (SQLRPGLE only)
@@ -23,3 +24,4 @@ OUTPUT MUST BE:
 - deterministic
 - reproducible
 - production-ready
+- self-documenting in production source, not only in Git comments
