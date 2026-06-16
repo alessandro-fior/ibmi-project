@@ -28,7 +28,7 @@ dcl-proc run_customer_report export;
   endif;
 
   for i = 1 to count;
-    // Standard Report Logic Pattern
+    // Standard Report Logic Pattern: Header & Overflow
     if firstRecord or *inof;
        TITLE = inTitle;
        write HEADER;
@@ -37,12 +37,15 @@ dcl-proc run_customer_report export;
        firstRecord = *off;
     endif;
 
+    // Map Data to PRTF Fields
     CUSTID = customers(i).id;
     CUSTNAME = customers(i).name;
     CUSTBAL = customers(i).balance;
+    
     write DETAIL;
   endfor;
 
+  // Finalize Report
   write FOOTER;
   close cust_rpt;
 
